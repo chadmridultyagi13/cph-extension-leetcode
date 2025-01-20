@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { TestCaseResult } from './resultDisplay';
 
 const execAsync = promisify(exec);
 
@@ -116,7 +117,7 @@ int main() {
     return runnerPath;
   }
 
-  public async executeCode(filePath: string, language: string): Promise<void> {
+  public async executeCode(filePath: string, language: string): Promise<TestCaseResult[]> {
     try {
       const dir = path.dirname(filePath);
       const inputPath = path.join(dir, "test_cases", "input.txt");
@@ -164,6 +165,7 @@ int main() {
     } catch (error) {
       throw error;
     }
+    return [];
   }
 }
 

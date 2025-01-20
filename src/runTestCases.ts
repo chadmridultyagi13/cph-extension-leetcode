@@ -1,6 +1,18 @@
 import vscode, { workspace } from "vscode";
 import { CodeExecutor } from "./codeExectuor";
+import { WebViewProvider } from './webView';
 import path from "path";
+
+const panel = vscode.window.createWebviewPanel(
+  "testCases",
+  "LeetCode Test Cases",
+  vscode.ViewColumn.Two,
+  {
+    enableScripts: true,
+    retainContextWhenHidden: true,
+  }
+);
+const WebView = new WebViewProvider(panel);
 
 
 export async function runTestCases() {
@@ -31,5 +43,6 @@ export async function runTestCases() {
   
   const executeCode = new CodeExecutor(workspaceFolder);
   const problemName = path.basename(filePath, path.extname(filePath));
-  await executeCode.executeCode(filePath, language);
+  const results = await executeCode.executeCode(filePath, language);
+  WebView.displayResults(results);
 }

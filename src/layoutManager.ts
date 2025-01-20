@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
-import { TestCasesPanel } from "./webView";
+import { WebViewProvider } from "./webView";
 
 export async function setupLayout(mainFilePath: string) {
   try {
     const document = await vscode.workspace.openTextDocument(mainFilePath);
     await vscode.window.showTextDocument(document, vscode.ViewColumn.One);
 
-    const panel = TestCasesPanel.createOrShow();
+    const panel = WebViewProvider.createOrShow();
     await panel.updateContent();
 
     return true;

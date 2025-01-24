@@ -1,56 +1,93 @@
-# CPH-LeetCode Helper
+# 🧩 LeetCode CPH Extension for VS Code
 
-*CPH-LeetCode Helper* is a Visual Studio Code extension designed to enhance your competitive programming experience by fetching and running test cases for LeetCode problems directly within VS Code.
+## 🚀 Turbocharge Your Competitive Programming Workflow
 
-## Features
+### 💡 What Makes This Extension Magical?
 
-- *Fetch Test Cases*: Retrieve test cases for any LeetCode problem with a single command.
-- *Run Test Cases*: Execute the fetched test cases against your solution directly from the editor.
-- *Customizable Views*: Provides a dedicated "LeetCode Test Cases" view in the activity bar for easy access and management.
-- *Seamless Integration*: Works smoothly with your LeetCode workspace and test files.
-> Tip: Use animations or videos to showcase the extension in action.
+**LeetCode CPH** transforms your VS Code into a competitive programming powerhouse, bridging the gap between problem-solving and local development.
 
-## Requirements
+---
 
-- Node.js (v14 or higher)
-- An active LeetCode account (login credentials required if using private problems).
+## ✨ Key Features
 
-## Installation
+### 🔍 Instant Problem Retrieval
+- **GraphQL Magic**: Fetch problem statements with a single command
+- Seamless extraction of structured test cases
+- Support for LeetCode problems at your fingertips
 
-1. Install the extension from the VS Code marketplace or download the .vsix file from the [GitHub repository](https://github.com/anshRastogi02/cph-leetcode).
-2. Open the Command Palette (Ctrl+Shift+P or Cmd+Shift+P) and search for CPH: Fetch Test Cases or CPH: Run Test Cases.
+### 💻 Frictionless Coding Environment
+- Native support for C++ and Python
+- Write, test, and debug without leaving VS Code
+- Real-time test case validation
 
-## Extension Settings
+### 🕵️ Debugging Superpowers
+- Comprehensive output comparison
+- Pinpoint exact test case failures
+- Accelerate your problem-solving skills
 
-This extension contributes the following settings:
+---
 
-- leetcodehelper.enable: Enable or disable the extension (default: true).
-- leetcodehelper.language: Set the default programming language for test cases (e.g., python, cpp, java).
+## 🛠 Quick Start Guide
 
-## Known Issues
+### 1️⃣ Setup in 4 Simple Steps
 
-- Test case fetching may fail for problems behind a paywall or requiring additional authentication.
-- Compatibility issues with custom problem formats.
+```bash
+# Clone the repository
+git clone https://github.com/shubh-garg18/cph_leetcode.git
 
-> Please report any issues on our [GitHub Issues page](https://github.com/anshRastogi02/cph-leetcode/issues).
+# Navigate to project directory
+cd cph_leetcode
 
-## Release Notes
+# Install dependencies
+yarn install
 
-### 0.0.2
+# Launch in VS Code
+code .
+```
 
-- *Improved Test Case Handling*: Enhanced parsing for complex inputs and outputs.
-- *Bug Fixes*: Fixed a crash when no test cases were found.
+### 2️⃣ Workflow Magic
 
-### 0.0.1
+1. **Fetch Test Cases** (`Ctrl+Shift+P`)
+   - Enter LeetCode problem URL
+   - Instant local test case generation
 
-- Initial release: Fetch and run test cases for LeetCode problems.
+2. **Code & Conquer**
+   - Write your solution directly in VS Code
+   - Run test cases with a single command
 
+3. **Analyze & Improve**
+   - Detailed output comparison
+   - Immediate feedback on your implementation
 
+---
 
-## For more information
+## 🔧 Prerequisites
 
-- [LeetCode](https://leetcode.com/)
-- [Visual Studio Code API Documentation](https://code.visualstudio.com/api)
-- [Markdown Syntax Reference](https://www.markdownguide.org/)
+- Visual Studio Code
+- Node.js & npm
+- TypeScript (global installation)
 
-*Enjoy Competitive Programming!*
+---
+
+## 🚀 Running the Extension
+
+- Press `F5` to launch in development mode
+- Use Command Palette for core functionalities
+
+---
+
+## 🙌 Acknowledgments
+
+Inspired by the legendary **Competitive Programming Helper (CPH)** 
+
+Powered by **LeetCode's GraphQL API**
+
+---
+
+## 📦 Repository
+
+[GitHub: cph_leetcode](https://github.com/shubh-garg18/cph_leetcode)
+
+---
+
+### 💖 Made with ❤️ for Competitive Programmers

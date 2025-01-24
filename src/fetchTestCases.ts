@@ -50,8 +50,8 @@ export async function fetchTestCases() {
       const mainFilePath = await createProblemFile(
         problemName,
         language,
-        workspacePath,
-        testCaseandCodeSnippet[1]
+        workspacePath
+        // testCaseandCodeSnippet[1]
       );
 
       await setupLayout(mainFilePath);

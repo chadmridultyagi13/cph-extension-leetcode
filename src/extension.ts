@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { fetchTestCases } from "./fetchTestCases";
-import { runTestCases } from "./runTestCases";
+import { runTestCasesCommand } from "./runTestCases";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const disposable2 = vscode.commands.registerCommand(
     "cph.RunTestCases",
-    runTestCases
+    runTestCasesCommand
   );
 
   context.subscriptions.push(disposable);

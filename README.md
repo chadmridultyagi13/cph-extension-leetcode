@@ -1,94 +1,76 @@
-# 🧩 LeetCode CPH Extension for VS Code
+🧩 LeetCode CPH Extension for VS Code
+🚀 Boost Your Competitive Programming Workflow
+💡 Why This Extension is a Must-Have ? 
 
-## 🚀 Turbocharge Your Competitive Programming Workflow
+LeetCode CPH converts your VS Code into an efficient competitive programming tool, seamlessly integrating problem-solving with local development.
 
-### 💡 What Makes This Extension Magical?
+✨ Notable Features
 
-**LeetCode CPH** transforms your VS Code into a competitive programming powerhouse, bridging the gap between problem-solving and local development.
+🔍 Instant Problem Fetching
 
----
 
-## ✨ Key Features
+1) GraphQL Integration: Quickly retrieve problem descriptions with a single command
+2) Effortless extraction of test cases in a structured format
+3) Full support for LeetCode problems within your editor
 
-### 🔍 Instant Problem Retrieval
-- **GraphQL Magic**: Fetch problem statements with a single command
-- Seamless extraction of structured test cases
-- Support for LeetCode problems at your fingertips
+💻 Streamlined Coding Environment
 
-### 💻 Frictionless Coding Environment
-- Native support for C++ and Python
-- Write, test, and debug without leaving VS Code
-- Real-time test case validation
+1) Native support for languages like C++ and Python
+2) Write, test, and debug your code all in VS Code
+3) Real-time validation of test cases
 
-### 🕵️ Debugging Superpowers
-- Comprehensive output comparison
-- Pinpoint exact test case failures
-- Accelerate your problem-solving skills
+🕵️ Debugging Assistance
 
----
+1) Detailed output comparison
+2) Easily track down failed test cases
+3) Sharpen your problem-solving skills faster
 
-## 🛠 Quick Start Guide
+🛠 Getting Started
+1️⃣ Set It Up in 4 Easy Steps
 
-### 1️⃣ Setup in 4 Simple Steps
-
-```bash
 # Clone the repository
-git clone https://github.com/shubh-garg18/cph_leetcode.git
+git clone https://github.com/chadmridultyagi13/cph-extension-leetcode
 
-# Navigate to project directory
-cd cph_leetcode
+# Change directory to the project folder
+cd cph-extension-leetcode
 
-# Install dependencies
+# Install necessary dependencies
 yarn install
 
-# Launch in VS Code
+# Open the project in VS Code
 code .
-```
 
-### 2️⃣ Workflow Magic
+2️⃣ How to Use It
+1) Fetch Test Cases (Ctrl+Shift+P)
+    Enter the URL of the LeetCode problem
+    Instantly generate test cases locally
 
-1. **Fetch Test Cases** (`Ctrl+Shift+P`)
-   - Enter LeetCode problem URL
-   - Instant local test case generation
+2) Code & Solve 
+   Write your solution directly within VS Code
+   Run your test cases with just a single command    
 
-2. **Code & Conquer**
-   - Write your solution directly in VS Code
-   - Run test cases with a single command
+3) Analyze & Improve
+   Compare output with the expected results
+   Get immediate feedback on your code's performance
 
-3. **Analyze & Improve**
-   - Detailed output comparison
-   - Immediate feedback on your implementation
-
----
-
-## 🔧 Prerequisites
-
-- Visual Studio Code
-- Node.js & npm
-- TypeScript (global installation)
-
----
-
-## 🚀 Running the Extension
-
-- Press `F5` to launch in development mode
-- Use Command Palette for core functionalities
-
----
-
-## 🙌 Acknowledgments
-
-Inspired by the legendary **Competitive Programming Helper (CPH)** 
-
-Powered by **LeetCode's GraphQL API**
-
----
-
-## 📦 Repository
-
-[GitHub: cph_leetcode](https://github.com/shubh-garg18/cph_leetcode)
-
----
+🔧 Requirements
+   Visual Studio Code  
+   Node.js & npm
+   TypeScript (ensure it's globally installed)
 
 
-### 💖 Made with ❤️ for Competitive Programmers# cph-extension-leetcode
+   🚀 Running the Extension
+    
+   1) Press F5 to start the extension in development mode
+   2) Use the Command Palette for all core functionalities
+
+
+   🙌 Acknowledgments
+   1)Inspired by the exceptional Competitive Programming Helper (CPH)
+   2) Built with LeetCode's GraphQL API integration
+
+   📦 Repository
+   GitHub: cph-extension-leetcode
+
+   💖 Created with ❤️ for Competitive Programmers
+

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { fetchTestCases } from "./fetchTestCases";
-import { runTestCasesCommand } from "./runTestCases";
-import { TestCasesPanel } from "./webView";
+import { fetchTestCases } from "./app/fetch";
+import { runTestCasesCommand } from "./app/testRun";
+import { TestCasesPanel } from "./UI";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed

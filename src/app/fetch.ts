@@ -2,9 +2,9 @@ import * as vscode from "vscode";
 import {
   extractProblemName,
   testCaseandCodeSnippetFromUrl,
-} from "./leetCodeScraper";
-import { saveTestCases, createProblemFile } from "./fileHandler";
-import { setupLayout } from "./layoutManager";
+} from "./leetfetch";
+import { saveTestCases, createProblemFile } from "../utils/fileHandler";
+import { setupLayout } from "../layout";
 
 export async function fetchTestCases() {
   try {

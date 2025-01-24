@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
-import { snippet } from "./leetCodeScraper";
+import { snippet } from "../app/leetfetch";
 
 export async function saveTestCases(
   testCases: { input: string; output: string }[]

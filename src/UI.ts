@@ -142,15 +142,15 @@ export class TestCasesPanel {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       :root {
-        --bg-primary: #1e1e1e;
-        --bg-secondary: #252526;
-        --text-primary: #d4d4d4;
-        --text-secondary: #9cdcfe;
-        --accent-color: #569cd6;
-        --accent-hover: #6aa4f0;
-        --border-color: #404040;
-        --error-bg: #ff000033;
-        --error-text: #f14c4c;
+        --bg-primary: #2c2c1e;
+        --bg-secondary: #3c3c2a;
+        --text-primary: #f0f0d0;
+        --text-secondary: #ffd700;
+        --accent-color: #daa520;
+        --accent-hover: #ffb300;
+        --border-color: #8b8b00;
+        --error-bg: #ffff0033;
+        --error-text: #ffd700;
       }
 
       body { 
@@ -174,13 +174,14 @@ export class TestCasesPanel {
         background: var(--bg-secondary); 
         padding: 20px; 
         border-radius: 8px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 2px solid var(--border-color);
+        box-shadow: 0 4px 6px rgba(139, 139, 0, 0.2);
         transition: transform 0.2s ease;
       }
 
       .section:hover {
         transform: translateY(-3px);
+        box-shadow: 0 6px 8px rgba(139, 139, 0, 0.3);
       }
 
       h3 { 
@@ -210,6 +211,7 @@ export class TestCasesPanel {
 
       textarea:focus {
         border-color: var(--accent-color);
+        box-shadow: 0 0 5px rgba(218, 165, 32, 0.5);
       }
 
       pre { 
@@ -224,8 +226,8 @@ export class TestCasesPanel {
 
       button {
         background: var(--accent-color);
-        color: white;
-        border: none;
+        color: var(--bg-primary);
+        border: 1px solid var(--border-color);
         padding: 8px 16px;
         border-radius: 4px;
         cursor: pointer;

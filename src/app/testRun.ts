@@ -6,7 +6,7 @@ import {
   execute,
   parseTestCaseLine,
   generateInputString,
-} from "./codeExecutor";
+} from "./executor";
 
 export async function runTestCasesCommand(context: vscode.ExtensionContext) {
   const editor = vscode.window.activeTextEditor;

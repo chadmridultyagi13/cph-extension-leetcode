@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { TestCasesPanel } from "./webView";
+import { TestCasesPanel } from "./UI";
 
 export async function setupLayout(mainFilePath: string) {
   try {

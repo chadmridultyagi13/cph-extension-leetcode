@@ -8,59 +8,47 @@ import { setupLayout } from "./layoutManager";
 
 export async function fetchTestCases() {
   try {
-    const questionLink = await vscode.window.showInputBox({
+    const link = await vscode.window.showInputBox({
       placeHolder: "https://leetcode.com/problems/two-sum",
-      prompt: "Please enter the LeetCode problem URL.",
+      prompt: "Enter LeetCode problem URL.",
     });
-    if (questionLink === "" || questionLink === undefined) {
-      vscode.window.showErrorMessage("No URL entered. Please try again.");
+    if (!link) {
+      vscode.window.showErrorMessage("No URL entered. Try again.");
       return;
     }
 
-    const validUrl = isValidLeetCodeUrl(questionLink);
-    if (!validUrl) {
-      vscode.window.showErrorMessage("Invalid LeetCode URL. Please try again.");
+    if (!isValidLeetCodeUrl(link)) {
+      vscode.window.showErrorMessage("Invalid URL. Try again.");
       return;
     }
 
-    const fetchingMessage = vscode.window.setStatusBarMessage(
-      `Fetching test cases and arranging the view`
-    );
-    const testCaseandCodeSnippet = await testCaseandCodeSnippetFromUrl(
-      questionLink
-    );
+    const msg = vscode.window.setStatusBarMessage(`Fetching test cases...`);
+    const data = await testCaseandCodeSnippetFromUrl(link);
 
-    if (testCaseandCodeSnippet && Array.isArray(testCaseandCodeSnippet)) {
-      await saveTestCases(testCaseandCodeSnippet[0]);
-      fetchingMessage.dispose();
+    if (data && Array.isArray(data)) {
+      await saveTestCases(data[0]);
+      msg.dispose();
 
-      const language = await askUserForLanguage();
-      if (!language) {
+      const lang = await askUserForLanguage();
+      if (!lang) return;
+
+      const workspace = vscode.workspace.workspaceFolders?.[0];
+      if (!workspace) {
+        vscode.window.showErrorMessage("No workspace found.");
         return;
       }
+      const path = workspace.uri.fsPath;
 
-      const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
-      if (!workspaceFolder) {
-        vscode.window.showErrorMessage("No workspace folder found.");
-        return;
-      }
-      const workspacePath = workspaceFolder.uri.fsPath;
+      const problem = extractProblemName(link);
+      const filePath = await createProblemFile(problem, lang, path);
 
-      const problemName = extractProblemName(questionLink);
-      const mainFilePath = await createProblemFile(
-        problemName,
-        language,
-        workspacePath
-        // testCaseandCodeSnippet[1]
-      );
-
-      await setupLayout(mainFilePath);
+      await setupLayout(filePath);
     } else {
       vscode.window.showErrorMessage("No test cases found.");
-      fetchingMessage.dispose();
+      msg.dispose();
     }
-  } catch (error) {
-    vscode.window.showErrorMessage(`An error occurred: ${error}`);
+  } catch (err) {
+    vscode.window.showErrorMessage(`Error: ${err}`);
   }
 }
 
@@ -75,16 +63,17 @@ function isValidLeetCodeUrl(url: string): boolean {
     return false;
   }
 }
+
 async function askUserForLanguage() {
-  const language = await vscode.window.showQuickPick(["C++", "Python"], {
-    placeHolder: "Select your preferred programming language",
+  const lang = await vscode.window.showQuickPick(["C++", "Python"], {
+    placeHolder: "Select language",
   });
 
-  if (!language) {
-    vscode.window.showErrorMessage("No language selected. Please try again.");
+  if (!lang) {
+    vscode.window.showErrorMessage("No language selected. Try again.");
     return;
   }
 
-  vscode.window.showInformationMessage(`You selected ${language}`);
-  return language;
+  vscode.window.showInformationMessage(`Selected: ${lang}`);
+  return lang;
 }

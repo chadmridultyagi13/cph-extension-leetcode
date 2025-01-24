@@ -5,68 +5,66 @@ import * as path from "path";
 
 export async function compileCpp(
   codePath: string,
-  workspaceFolder: string
+  workspace: string
 ): Promise<string> {
   const compiler = "g++";
-  const outputExe = path.join(workspaceFolder, "problem_executable");
+  const outputExe = path.join(workspace, "problem_executable");
   const args = [codePath, "-o", outputExe, "-std=c++17"];
 
   return new Promise((resolve, reject) => {
-    const process = spawn(compiler, args);
+    const proc = spawn(compiler, args);
 
-    let stderr = "";
-    process.stderr.on("data", (data) => {
-      stderr += data.toString();
+    let err = "";
+    proc.stderr.on("data", (data) => {
+      err += data.toString();
     });
 
-    process.on("close", (code) => {
+    proc.on("close", (code) => {
       if (code === 0) {
         resolve(outputExe);
       } else {
-        reject(new Error(`Compilation failed: ${stderr}`));
+        reject(new Error(`Compilation failed: ${err}`));
       }
     });
   });
 }
 
 export async function execute(
-  executablePath: string,
+  execPath: string,
   input: string,
-  language: "cpp" | "python"
+  lang: "cpp" | "python"
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    let process;
-    const isWindows = os.platform() === "win32";
-    const pythonCommand = isWindows ? "python" : "python3";
+    let proc;
+    const isWin = os.platform() === "win32";
+    const pyCmd = isWin ? "python" : "python3";
 
-    if (language === "cpp") {
-      process = spawn(executablePath, [], { stdio: "pipe" });
-    } else if (language === "python") {
-      process = spawn(pythonCommand, [executablePath], {
-        stdio: "pipe",
-      });
+    if (lang === "cpp") {
+      proc = spawn(execPath, [], { stdio: "pipe" });
+    } else if (lang === "python") {
+      proc = spawn(pyCmd, [execPath], { stdio: "pipe" });
     } else {
       reject(new Error("Unsupported language"));
       return;
     }
 
-    let stdout = "";
-    let stderr = "";
-    process.stdout.on("data", (data) => {
-      stdout += data.toString();
+    let out = "";
+    let err = "";
+    proc.stdout.on("data", (data) => {
+      out += data.toString();
     });
-    process.stderr.on("data", (data) => {
-      stderr += data.toString();
+    proc.stderr.on("data", (data) => {
+      err += data.toString();
     });
 
-    process.stdin.write(input);
-    process.stdin.end();
+    proc.stdin.write(input);
+    proc.stdin.end();
 
-    process.on("close", (code) => {
+    proc.on("close", (code) => {
       if (code !== 0) {
-        reject(new Error(`Execution error: ${stderr}`));
+        reject(new Error(`Execution error: ${err}`));
       } else {
-        resolve(stdout.trim());
+        resolve(out.trim());
       }
     });
   });
@@ -76,34 +74,34 @@ export function parseTestCaseLine(
   line: string
 ): Array<{ key: string; value: any }> {
   const regex = /(\w+)\s*=\s*((?:\[.*?\]|[^=\s])+)/g;
-  const variables: Array<{ key: string; value: any }> = [];
+  const vars: Array<{ key: string; value: any }> = [];
   let match;
 
   while ((match = regex.exec(line)) !== null) {
     const key = match[1];
-    let valueStr = match[2].trim();
+    let valStr = match[2].trim();
 
-    if (valueStr.startsWith("[") && valueStr.endsWith("]")) {
-      valueStr = valueStr.slice(1, -1).trim();
-      const elements = valueStr.split(/\s+/).map((e) => {
+    if (valStr.startsWith("[") && valStr.endsWith("]")) {
+      valStr = valStr.slice(1, -1).trim();
+      const elems = valStr.split(/\s+/).map((e) => {
         const num = Number(e);
         return isNaN(num) ? e : num;
       });
-      variables.push({ key, value: elements });
+      vars.push({ key, value: elems });
     } else {
-      const num = Number(valueStr);
-      variables.push({ key, value: isNaN(num) ? valueStr : num });
+      const num = Number(valStr);
+      vars.push({ key, value: isNaN(num) ? valStr : num });
     }
   }
 
-  return variables;
+  return vars;
 }
 
 export function generateInputString(
-  variables: Array<{ key: string; value: any }>
+  vars: Array<{ key: string; value: any }>
 ): string {
   return (
-    variables
+    vars
       .map((v) => {
         if (Array.isArray(v.value)) {
           return v.value.join(" ");

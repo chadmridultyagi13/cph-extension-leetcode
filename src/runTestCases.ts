@@ -16,26 +16,26 @@ export async function runTestCasesCommand(context: vscode.ExtensionContext) {
   }
 
   const codePath = editor.document.uri.fsPath;
-  const language = codePath.endsWith(".cpp")
+  const lang = codePath.endsWith(".cpp")
     ? "cpp"
     : codePath.endsWith(".py")
     ? "python"
     : null;
-  if (!language) {
+  if (!lang) {
     vscode.window.showErrorMessage("Unsupported file type");
     return;
   }
 
-  const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-  if (!workspaceFolder) {
+  const workspace = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+  if (!workspace) {
     vscode.window.showErrorMessage("No workspace folder open");
     return;
   }
 
-  const testCasesPath = path.join(workspaceFolder, "test_cases");
-  const inputFile = path.join(testCasesPath, "input.txt");
-  const expectedOutputFile = path.join(testCasesPath, "expected_output.txt");
-  const outputFile = path.join(testCasesPath, "output.txt");
+  const testCasesDir = path.join(workspace, "test_cases");
+  const inputFile = path.join(testCasesDir, "input.txt");
+  const expectedOutputFile = path.join(testCasesDir, "expected_output.txt");
+  const outputFile = path.join(testCasesDir, "output.txt");
 
   if (!fs.existsSync(inputFile) || !fs.existsSync(expectedOutputFile)) {
     vscode.window.showErrorMessage("Test cases not found. Fetch them first.");
@@ -45,47 +45,38 @@ export async function runTestCasesCommand(context: vscode.ExtensionContext) {
   const inputText = fs.readFileSync(inputFile, "utf-8");
   const expectedOutputText = fs.readFileSync(expectedOutputFile, "utf-8");
 
-  const testCaseLines = inputText
-    .split("\n")
-    .filter((line) => line.trim() !== "");
+  const testCases = inputText.split("\n").filter((line) => line.trim() !== "");
   const expectedOutputs = expectedOutputText
     .split("\n")
     .filter((line) => line.trim() !== "");
 
-  if (testCaseLines.length !== expectedOutputs.length) {
-    vscode.window.showErrorMessage(
-      "Input and expected output have different number of test cases"
-    );
-    return;
-  }
-
   let actualOutputs: string[] = [];
   try {
-    if (language === "cpp") {
-      const executablePath = await compileCpp(codePath, workspaceFolder);
-      for (const line of testCaseLines) {
-        const variables = parseTestCaseLine(line);
-        const input = generateInputString(variables);
+    if (lang === "cpp") {
+      const execPath = await compileCpp(codePath, workspace);
+      for (const line of testCases) {
+        const vars = parseTestCaseLine(line);
+        const input = generateInputString(vars);
         try {
-          const output = await execute(executablePath, input, "cpp");
+          const output = await execute(execPath, input, "cpp");
           actualOutputs.push(output);
-        } catch (error) {
-          if (error instanceof Error) {
-            vscode.window.showErrorMessage(error.message);
+        } catch (err) {
+          if (err instanceof Error) {
+            vscode.window.showErrorMessage(err.message);
             actualOutputs.push("Execution Error");
           }
         }
       }
-    } else if (language === "python") {
-      for (const line of testCaseLines) {
-        const variables = parseTestCaseLine(line);
-        const input = generateInputString(variables);
+    } else if (lang === "python") {
+      for (const line of testCases) {
+        const vars = parseTestCaseLine(line);
+        const input = generateInputString(vars);
         try {
           const output = await execute(codePath, input, "python");
           actualOutputs.push(output);
-        } catch (error) {
-          if (error instanceof Error) {
-            vscode.window.showErrorMessage(error.message);
+        } catch (err) {
+          if (err instanceof Error) {
+            vscode.window.showErrorMessage(err.message);
             actualOutputs.push("Execution Error");
           }
         }
@@ -97,33 +88,38 @@ export async function runTestCasesCommand(context: vscode.ExtensionContext) {
     const results = [];
     for (let i = 0; i < actualOutputs.length; i++) {
       const actual = actualOutputs[i];
-      const expected = expectedOutputs[i].trim();
+      const expected =
+        i < expectedOutputs.length ? expectedOutputs[i].trim() : "N/A";
+      const passed = i < expectedOutputs.length ? actual === expected : null;
+
       results.push({
-        testCase: testCaseLines[i],
+        testCase: testCases[i],
         actual,
         expected,
-        passed: actual === expected,
+        passed,
       });
     }
 
-    const passedCount = results.filter((r) => r.passed).length;
-    const totalCount = results.length;
+    const originalTestCasesCount = expectedOutputs.length;
+    const passed = results
+      .slice(0, originalTestCasesCount)
+      .filter((r) => r.passed).length;
+    const totalRun = actualOutputs.length;
+
     vscode.window.showInformationMessage(
-      `Passed ${passedCount}/${totalCount} test cases.`
+      `Passed ${passed}/${originalTestCasesCount} official test cases. Run ${totalRun} total cases.`
     );
 
-    // Display detailed results in webview
     const panel = vscode.window.createWebviewPanel(
       "testResults",
       "Test Results",
       vscode.ViewColumn.Beside,
       {}
     );
-
     panel.webview.html = getWebviewContent(results);
-  } catch (error) {
-    if (error instanceof Error) {
-      vscode.window.showErrorMessage(error.message);
+  } catch (err) {
+    if (err instanceof Error) {
+      vscode.window.showErrorMessage(err.message);
     }
   }
 }
@@ -134,7 +130,13 @@ function getWebviewContent(results: any[]): string {
       (result, index) => `
         <tr>
             <td>Test Case ${index + 1}</td>
-            <td>${result.passed ? "✅ Passed" : "❌ Failed"}</td>
+            <td>${
+              result.passed === null
+                ? "🔵 Custom"
+                : result.passed
+                ? "✅ Passed"
+                : "❌ Failed"
+            }</td>
             <td><pre>${result.actual}</pre></td>
             <td><pre>${result.expected}</pre></td>
         </tr>
@@ -149,6 +151,7 @@ function getWebviewContent(results: any[]): string {
                 table { width: 100%; border-collapse: collapse; }
                 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                 pre { margin: 0; }
+                .custom { color: #666; }
             </style>
         </head>
         <body>
@@ -162,6 +165,11 @@ function getWebviewContent(results: any[]): string {
                 </tr>
                 ${rows}
             </table>
+            ${
+              results.some((r) => r.passed === null)
+                ? '<p style="color: #666; margin-top: 15px;">🔵 Custom test cases - No expected output provided</p>'
+                : ""
+            }
         </body>
         </html>
     `;

@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { fetchTestCases } from "./fetchTestCases";
 import { runTestCasesCommand } from "./runTestCases";
+import { TestCasesPanel } from "./webView";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -20,6 +21,14 @@ export function activate(context: vscode.ExtensionContext) {
     runTestCasesCommand
   );
 
+  // Extra command
+  const disposable3 = vscode.commands.registerCommand(
+    "cph.revealTestCasesPanel",
+    () => {
+      TestCasesPanel.reveal();
+    }
+  );
+  context.subscriptions.push(disposable3);
   context.subscriptions.push(disposable);
   context.subscriptions.push(disposable2);
 }
